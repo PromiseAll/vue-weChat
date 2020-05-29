@@ -122,27 +122,43 @@ export default {
         ...mapState(["userId"])
     },
     watch: {
+        userId() {
+            this.classId = "";
+            this.getWechatClass();
+        },
         options() {
             if (this.options.length == 0) {
                 return;
             }
-            this.tableData = this.options.filter(item => {
+            let wechatData = this.options.filter(item => {
                 if (item._id == this.classId) {
                     return true;
                 }
                 return false;
-            })[0].wechat;
-            console.log(this.tableData);
+            });
+
+            if (wechatData.length == 0) {
+                return;
+            } else {
+                this.tableData = wechatData[0].wechat;
+            }
         },
 
         classId(newId, oldId) {
-            this.tableData = this.options.filter(item => {
+            if (this.options.length == 0) {
+                return;
+            }
+            let wechatData = this.options.filter(item => {
                 if (item._id == newId) {
                     return true;
                 }
                 return false;
-            })[0].wechat;
-            console.log(this.tableData);
+            });
+            if (wechatData.length == 0) {
+                this.tableData = wechatData;
+            } else {
+                this.tableData = wechatData[0].wechat;
+            }
         }
     },
     methods: {
@@ -167,9 +183,7 @@ export default {
                     type,
                     wechat
                 })
-                .then(({ data }) => {
-                    console.log(data);
-                })
+                .then(({ data }) => {})
                 .then(() => {
                     this.getWechatClass();
                     this.addVisible = false;
@@ -190,7 +204,6 @@ export default {
                     isDelete
                 };
             });
-            console.log(arr3);
             return arr3;
         }
     },

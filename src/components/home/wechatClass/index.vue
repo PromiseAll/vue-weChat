@@ -65,6 +65,11 @@ export default {
     computed: {
         ...mapState(["userId"])
     },
+    watch: {
+        userId() {
+            this.getWechatClass();
+        }
+    },
     methods: {
         getWechatClass() {
             this.$api

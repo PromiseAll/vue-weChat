@@ -3,6 +3,8 @@ const HOST = 'https://127.0.0.1:3001';
 
 const URL_login = HOST + '/user/login';
 const URL_linkList = HOST + '/link/list';
+const URL_addLink = HOST + '/link/add';
+
 const URL_getWechatClass = HOST + '/wechat/getWechatClass';
 const URL_createWechatClass = HOST + '/wechat/createWechatClass';
 const URL_deleteWechatClass = HOST + '/wechat/deleteWechatClass';
@@ -15,6 +17,9 @@ export default {
     },
     getLinkList(data) {
         return post(URL_linkList, data);
+    },
+    addLink(data) {
+        return post(URL_addLink, data);
     },
     getWechatClass(data) {
         return post(URL_getWechatClass, data);

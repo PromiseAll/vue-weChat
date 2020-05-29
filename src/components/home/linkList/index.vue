@@ -1,5 +1,13 @@
 <template>
     <div>
+        <el-dialog title="添加链接" :visible.sync="addVisible" width="500px" center>
+            <el-input v-model="addUrl" placeholder="http://" size="small"></el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addVisible = false" size="small">取消</el-button>
+                <el-button type="primary" @click="addLink" size="small">添加</el-button>
+            </span>
+        </el-dialog>
+
         <el-row type="flex" justify="space-between" style="padding:10px;marginTop:-20px">
             <div style="width:430px;display:flex;justify-content:space-between;align-items:center"></div>
             <div>
@@ -25,27 +33,19 @@
                 </template>
             </el-table-column>
             <el-table-column label="微信推送" width="180" align="center">
-                <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <div style="display:flex;justify-content:center;align-items:center">
-                            <span
-                                style="fontSize:12px;fontWeight:600;margin:0 10px;color:#333"
-                            >选择分组:</span>
-                            <div style="width:140px;">
-                                <el-select v-model="classId" placeholder="请选择" size="small">
-                                    <el-option
-                                        v-for="item in options"
-                                        :key="item._id"
-                                        :label="item.className"
-                                        :value="item._id"
-                                    ></el-option>
-                                </el-select>
-                            </div>
+                <template>
+                    <div style="display:flex;justify-content:center;align-items:center">
+                        <div style="width:140px;">
+                            <el-select v-model="classId" placeholder="请选择" size="small">
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item._id"
+                                    :label="item.className"
+                                    :value="item._id"
+                                ></el-option>
+                            </el-select>
                         </div>
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.url }}</el-tag>
-                        </div>
-                    </el-popover>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -67,11 +67,20 @@ import { mapState, mapMutations } from "vuex";
 export default {
     data() {
         return {
-            tableData: []
+            tableData: [],
+            addVisible: false,
+            addUrl: "",
+            classId: "",
+            options: []
         };
     },
     computed: {
         ...mapState(["userId"])
+    },
+    watch: {
+        userId() {
+            this.getList();
+        }
     },
     methods: {
         getList() {
@@ -83,6 +92,22 @@ export default {
                     if (data.code) {
                         this.tableData = data.result;
                     }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        addLink() {
+            this.$api
+                .addLink({
+                    userId: this.userId,
+                    url: this.addUrl.trim()
+                })
+                .then(({ data }) => {
+                    if (data.code) {
+                        console.log(data);
+                    }
+                    console.log(data);
                 })
                 .catch(err => {
                     console.log(err);

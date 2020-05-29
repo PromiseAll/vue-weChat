@@ -10,4 +10,7 @@
     padding: 0;
     margin: 0;
 }
+#app {
+    min-width: 1440px;
+}
 </style>
