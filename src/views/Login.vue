@@ -35,16 +35,14 @@ export default {
         login() {
             console.log(this.account);
             console.log(this.password);
-            this.axios({
-                method: "post",
-                url: "/user/login",
-                data: {
+            this.$api
+                .login({
                     account: this.account,
                     password: this.password
-                }
-            }).then(({ data }) => {
-                console.log(data);
-            });
+                })
+                .then(({ data }) => {
+                    console.log(data);
+                });
         }
     }
 };
@@ -61,8 +59,6 @@ export default {
         width: 400px;
         background-color: tomato;
         display: flex;
-        .login {
-        }
     }
 }
 </style>

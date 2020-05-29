@@ -15,6 +15,11 @@ const routes = [
                 component: () => import('@/components/home/wechat'),
             },
             {
+                path: 'wechatClass',
+                name: 'wechatClass',
+                component: () => import('@/components/home/wechatClass'),
+            },
+            {
                 path: 'linkList',
                 name: 'LinkList',
                 component: () => import('@/components/home/linkList'),

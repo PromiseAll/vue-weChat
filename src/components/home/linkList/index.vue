@@ -38,13 +38,10 @@ export default {
     },
     methods: {
         getList() {
-            this.axios({
-                method: "post",
-                url: "/link/list",
-                data: {
+            this.$api
+                .linkList({
                     userId: "5ecb83a9f6e8ae091cd00c3d"
-                }
-            })
+                })
                 .then(({ data }) => {
                     console.log(data);
                     this.tableData = data;

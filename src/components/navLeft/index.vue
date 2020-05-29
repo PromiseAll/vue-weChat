@@ -11,15 +11,15 @@
                 <el-submenu index="1">
                     <template slot="title">
                         <i class="el-icon-location"></i>
-                        <span>微信管理</span>
+                        <span>在推微信</span>
                     </template>
-                    <router-link to="/home/wechat" tag="el-menu-item" index="1-1">全局管理</router-link>
-                    <router-link to="/home/wechat" tag="el-menu-item" index="1-1">独立管理</router-link>
+                    <router-link to="/home/wechat" tag="el-menu-item" index="1-1">微信管理</router-link>
+                    <router-link to="/home/wechatClass" tag="el-menu-item" index="1-1">分组管理</router-link>
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title">
                         <i class="el-icon-menu"></i>
-                        <span>链接管理</span>
+                        <span>在推微信</span>
                     </template>
                     <router-link to="/home/linkList" tag="el-menu-item" index="1-3">链接列表</router-link>
                 </el-submenu>

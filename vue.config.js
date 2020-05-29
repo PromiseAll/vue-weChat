@@ -3,6 +3,6 @@ module.exports = {
     outputDir: 'dist',
     assetsDir: 'static',
     devServer: {
-        proxy: 'http://localhost:3001', //访问另外服务器的端口
+        proxy: 'https://localhost:3001', //访问另外服务器的端口
     },
 };
