@@ -7,12 +7,13 @@ const URL_getWechatClass = HOST + '/wechat/getWechatClass';
 const URL_createWechatClass = HOST + '/wechat/createWechatClass';
 const URL_deleteWechatClass = HOST + '/wechat/deleteWechatClass';
 const URL_updateWechat = HOST + '/wechat/update';
+const URL_getUserList = HOST + '/user/list';
 
 export default {
     login(data) {
         return post(URL_login, data);
     },
-    linkList(data) {
+    getLinkList(data) {
         return post(URL_linkList, data);
     },
     getWechatClass(data) {
@@ -26,5 +27,9 @@ export default {
     },
     updateWechat(data) {
         return post(URL_updateWechat, data);
+    },
+
+    getUserList(data) {
+        return post(URL_getUserList, data);
     },
 };

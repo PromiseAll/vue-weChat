@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
     data() {
         return {
@@ -60,24 +62,28 @@ export default {
             tableData: []
         };
     },
+    computed: {
+        ...mapState(["userId"])
+    },
     methods: {
         getWechatClass() {
             this.$api
                 .getWechatClass({
-                    userId: "5eccb0dad40e3525d82a6004"
+                    userId: this.userId
                 })
                 .then(({ data }) => {
-                    this.tableData = data.result;
+                    if (data.code) {
+                        this.tableData = data.result;
+                    }
                 });
         },
         createWechatClass() {
             this.$api
                 .createWechatClass({
-                    userId: "5eccb0dad40e3525d82a6004",
+                    userId: this.userId,
                     className: this.className
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     this.DialogVisible = false;
                 })
                 .then(() => {

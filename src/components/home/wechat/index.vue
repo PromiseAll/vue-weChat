@@ -102,6 +102,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
     data() {
         return {
@@ -116,8 +118,14 @@ export default {
             addsWechat: ""
         };
     },
+    computed: {
+        ...mapState(["userId"])
+    },
     watch: {
         options() {
+            if (this.options.length == 0) {
+                return;
+            }
             this.tableData = this.options.filter(item => {
                 if (item._id == this.classId) {
                     return true;
@@ -141,12 +149,14 @@ export default {
         getWechatClass() {
             this.$api
                 .getWechatClass({
-                    userId: "5eccb0dad40e3525d82a6004"
+                    userId: this.userId
                 })
                 .then(({ data }) => {
-                    this.options = data.result;
-                    if (this.classId == "") {
-                        this.classId = data.result[0]._id;
+                    if (data.code && data.result.length) {
+                        this.options = data.result;
+                        if (this.classId == "") {
+                            this.classId = data.result[0]._id;
+                        }
                     }
                 });
         },
