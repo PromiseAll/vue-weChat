@@ -1,10 +1,21 @@
 <template>
     <div style="display:flex;justify-content:flex-end;align-items:center;height:60px">
         <el-row type="flex" justify="end">
+            <div style="marginRight:10px">
+                <el-avatar
+                    size="small"
+                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                ></el-avatar>
+            </div>
             <div style="display:flex;justify-content:space-between;align-items:center">
                 <div style="display:flex;justify-content:center;align-items:center">
                     <div style="width:140px;">
-                        <el-select v-model="currentUserId" placeholder="选择用户" size="small">
+                        <el-select
+                            v-model="currentUserId"
+                            placeholder="选择用户"
+                            size="small"
+                            @change="()=>{setUserId({ userId: currentUserId });this.$message.success('切换用户成功')}"
+                        >
                             <el-option
                                 v-for="item in options"
                                 :key="item._id"
@@ -14,14 +25,6 @@
                         </el-select>
                     </div>
                 </div>
-            </div>
-
-            <div>
-                <el-button
-                    type="success"
-                    size="small"
-                    @click="setUserId({ userId: currentUserId })"
-                >选择</el-button>
             </div>
         </el-row>
     </div>
@@ -42,12 +45,11 @@ export default {
     methods: {
         ...mapMutations(["setUserId"]),
         getUserList() {
-            console.log(this.userId);
             this.$api
                 .getUserList({})
                 .then(({ data }) => {
                     this.options = data.result;
-                    if (!this.currentUserId) {
+                    if (this.currentUserId == "" && this.options.length !== 0) {
                         this.currentUserId = this.options[0]._id;
                         this.setUserId({ userId: this.currentUserId });
                     }

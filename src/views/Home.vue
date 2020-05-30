@@ -32,13 +32,13 @@ export default {
 <style lang="less">
 .el-header,
 .el-footer {
-    background-color: #b3c0d1;
-    color: #333;
+    background-color: #252a34;
+    color: #fff;
     text-align: center;
 }
 
 .el-aside {
-    background-color: #d3dce6;
+    background-color: #252a34;
     color: #333;
     text-align: center;
 }

@@ -50,9 +50,9 @@
                     <el-input
                         size="small"
                         placeholder="搜索微信号"
-                        suffix-icon="el-icon-search"
                         v-model="search"
-                        label="3245"
+                        label
+                        :clearable="true"
                     ></el-input>
                 </div>
             </div>
@@ -90,11 +90,13 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button
-                        size="mini"
-                        type="danger"
-                        @click="()=>{updateWechat(classId,3,{number:scope.row.number})}"
-                    >删除</el-button>
+                    <el-popconfirm
+                        title="确定删除吗？"
+                        @onConfirm="()=>{updateWechat(classId,3,{number:scope.row.number})}"
+                        confirmButtonType="danger"
+                    >
+                        <el-button slot="reference" size="mini" type="danger">删除</el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
@@ -183,10 +185,19 @@ export default {
                     type,
                     wechat
                 })
-                .then(({ data }) => {})
+                .then(({ data }) => {
+                    if (data.code == 1) {
+                        this.addWechat = "";
+                        this.addsWechat = "";
+                        this.addVisible = false;
+                        this.addsVisible = false;
+                        this.$message.success("更新数据成功");
+                        return;
+                    }
+                    this.$message.error("更新数据失败");
+                })
                 .then(() => {
                     this.getWechatClass();
-                    this.addVisible = false;
                 });
         },
         addsToWechat() {

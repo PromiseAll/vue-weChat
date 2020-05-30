@@ -19,7 +19,7 @@
         <el-table :data="tableData" style="width: 100%" algin="center">
             <el-table-column label="序号" align="center" width="80">
                 <template slot-scope="scope">
-                    <span>{{scope.$index}}</span>
+                    <span>{{scope.$index+1}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="组名" align="center" width="280">
@@ -39,12 +39,13 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button
-                        size="mini"
-                        type="danger"
-                        @click="deleteWechatClass(scope.row._id)"
-                    >删除</el-button>
+                    <el-popconfirm
+                        title="确定删除吗？"
+                        @onConfirm="deleteWechatClass(scope.row._id)"
+                        confirmButtonType="danger"
+                    >
+                        <el-button slot="reference" size="mini" type="danger">删除</el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
@@ -89,7 +90,10 @@ export default {
                     className: this.className
                 })
                 .then(({ data }) => {
-                    this.DialogVisible = false;
+                    if (data.code == 1) {
+                        this.DialogVisible = false;
+                        this.$message.success("创建分组成功");
+                    }
                 })
                 .then(() => {
                     this.getWechatClass();
@@ -101,7 +105,9 @@ export default {
                     _id
                 })
                 .then(({ data }) => {
-                    console.log(data);
+                    if (data.code == 1) {
+                        this.$message.success("删除成功");
+                    }
                 })
                 .then(() => {
                     this.getWechatClass();

@@ -24,6 +24,11 @@ const routes = [
                 name: 'LinkList',
                 component: () => import('@/components/home/linkList'),
             },
+            {
+                path: 'userList',
+                name: 'userList',
+                component: () => import('@/components/home/user'),
+            },
         ],
     },
     {
