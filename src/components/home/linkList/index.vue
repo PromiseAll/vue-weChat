@@ -18,12 +18,12 @@
         </el-row>
 
         <el-table :data="tableData" style="width: 100%">
-            <el-table-column label="序号" width="110" align="center">
+            <el-table-column label="序号" width="80" align="center">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.$index+1 }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="备注" width="180" align="center">
+            <el-table-column label="备注" width="100" align="center">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.name }}</span>
                 </template>
@@ -33,7 +33,17 @@
                     <el-link type="primary" :href="scope.row.url" target="_blank">{{scope.row.url}}</el-link>
                 </template>
             </el-table-column>
-            <el-table-column label="微信推送" width="180" align="center">
+            <el-table-column label="最近浏览量" width="250" align="center">
+                <template slot-scope="scope">
+                    <el-tag size="mini" type="warning">{{scope.row.hoursFlow}}/时</el-tag>
+                    <el-tag
+                        size="mini"
+                        style="marginLeft:10px"
+                        type="warning"
+                    >{{scope.row.dayFlow}}/天</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column label="微信推送" width="130" align="center">
                 <template slot-scope="scope">
                     <div style="display:flex;justify-content:center;align-items:center">
                         <div style="width:140px;">

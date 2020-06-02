@@ -1,6 +1,6 @@
 import { post, get } from 'axios';
-// const HOST = 'https://123.56.95.108:3001';
-const HOST = 'https://127.0.0.1:3001';
+const HOST = 'https://zgwdemo.icu:3001';
+// const HOST = 'https://127.0.0.1:3001';
 
 const URL_login = HOST + '/user/login';
 const URL_linkList = HOST + '/link/list';

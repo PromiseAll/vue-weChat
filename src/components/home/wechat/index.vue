@@ -28,7 +28,11 @@
         <!-- 全部删除弹窗 -->
 
         <el-row type="flex" justify="space-between" style="padding:10px;marginTop:-20px">
-            <div style="width:430px;display:flex;justify-content:space-between;align-items:center">
+            <div style="width:700px;display:flex;justify-content:space-between;align-items:center">
+                <span
+                    style="fontSize:12px;fontWeight:600;margin:0 0px;color:#333"
+                >共 {{tableData.length}} 个数据</span>
+
                 <div style="display:flex;justify-content:center;align-items:center">
                     <span style="fontSize:12px;fontWeight:600;margin:0 10px;color:#333">选择分组:</span>
                     <div style="width:140px;">
@@ -43,13 +47,23 @@
                     </div>
                 </div>
 
+                <div style="display:flex;justify-content:center;align-items:center">
+                    <span style="fontSize:12px;fontWeight:600;margin:0 10px;color:#333">筛选分类:</span>
+                    <div style="width:100px;">
+                        <el-select v-model="wechatStatus" placeholder="请选择" size="small">
+                            <el-option :key="0" label="全部" :value="0"></el-option>
+                            <el-option :key="1" label="上线" :value="1"></el-option>
+                            <el-option :key="2" label="下线" :value="2"></el-option>
+                        </el-select>
+                    </div>
+                </div>
                 <div style="width:200px;display:flex;justify-content:center;align-items:center">
                     <span
                         style="fontSize:12px;fontWeight:600;margin:0 10px;color:#333;width:50px"
                     >搜索:</span>
                     <el-input
                         size="small"
-                        placeholder="搜索微信号"
+                        placeholder="搜索当前微信号"
                         v-model="search"
                         label
                         :clearable="true"
@@ -60,11 +74,18 @@
             <div>
                 <el-button type="success" size="small" @click="addVisible = true">添加</el-button>
                 <el-button type="primary" size="small" @click="addsVisible = true">批量添加</el-button>
-                <el-button type="danger" size="small" @click="()=>{updateWechat(classId,0,[])}">全部删除</el-button>
+                <el-popconfirm
+                    title="确定删除全部微信号嘛？此操作将不可恢复"
+                    @onConfirm="()=>{updateWechat(classId,0,[])}"
+                    confirmButtonType="danger"
+                    style="marginLeft:10px"
+                >
+                    <el-button slot="reference" size="small" type="danger">全部删除</el-button>
+                </el-popconfirm>
             </div>
         </el-row>
         <el-table
-            :data="tableData.filter(data => !search || data.number.includes(search.trim()))"
+            :data="wechatData.filter(data => !search || data.number.includes(search.trim()))"
             style="width: 100%"
             algin="center"
         >
@@ -78,21 +99,34 @@
                     <span>{{scope.row.number}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="姓名" align="center" width="200">
+            <el-table-column label="姓名" align="center" width="150">
                 <template slot-scope="scope">
                     <span>{{scope.row.name}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center" width="80">
+            <el-table-column label="添加时间" align="center" width="200">
                 <template slot-scope="scope">
-                    <span>{{scope.row.isDelete}}</span>
+                    <span>{{scope.row.addDate}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="状态" align="center" width="180">
+                <template slot-scope="scope">
+                    <el-tag v-if="!scope.row.isDelete" type="success" size="medium">上线</el-tag>
+                    <el-tag v-else type="info" size="medium">下线</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
+                    <el-button
+                        @click="()=>{updateWechat(classId,4,{id:scope.row.id,isDelete:!scope.row.isDelete})}"
+                        size="mini"
+                        :type="scope.row.isDelete?'success':'info'"
+                    >{{scope.row.isDelete?'上线':'下线'}}</el-button>
+
                     <el-popconfirm
+                        style="marginLeft:10px"
                         title="确定删除吗？"
-                        @onConfirm="()=>{updateWechat(classId,3,{number:scope.row.number})}"
+                        @onConfirm="()=>{updateWechat(classId,3,{id:scope.row.id})}"
                         confirmButtonType="danger"
                     >
                         <el-button slot="reference" size="mini" type="danger">删除</el-button>
@@ -112,6 +146,7 @@ export default {
             options: [],
             classId: "",
             tableData: [],
+            wechatStatus: 0, //筛选分类状态 0全部 1上线 2下线
             addVisible: false,
             addWechat: "",
             addName: "",
@@ -121,7 +156,29 @@ export default {
         };
     },
     computed: {
-        ...mapState(["userId"])
+        ...mapState(["userId"]),
+        wechatData() {
+            return this.tableData.filter(wechat => {
+                switch (this.wechatStatus) {
+                    case 0:
+                        return true;
+                        break;
+                    case 1:
+                        if (!wechat.isDelete) {
+                            return true;
+                        }
+                        break;
+                    case 2:
+                        if (wechat.isDelete) {
+                            return true;
+                        }
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+            });
+        }
     },
     watch: {
         userId() {
