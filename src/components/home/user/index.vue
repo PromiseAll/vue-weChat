@@ -1,7 +1,10 @@
 <template>
     <div>
-        <el-dialog title="添加用户" :visible.sync="addVisible" width="500px" center>
-            <el-input v-model="addNikeName" placeholder size="small"></el-input>
+        <el-dialog title="添加用户" :visible.sync="addVisible" width="350px" center>
+            <el-input v-model="addNickName" placeholder="昵称:" size="small"></el-input>
+            <el-input v-model="addAccount" placeholder="账号:" size="small" style="marginTop:15px"></el-input>
+            <el-input v-model="addPassword" placeholder="密码:" size="small" style="marginTop:15px"></el-input>
+
             <span slot="footer" class="dialog-footer">
                 <el-button @click="addVisible = false" size="small">取消</el-button>
                 <el-button type="primary" @click="addUser" size="small">添加</el-button>
@@ -9,7 +12,7 @@
         </el-dialog>
 
         <el-row type="flex" justify="space-between" style="padding:10px;marginTop:-20px">
-            <div style="width:430px;display:flex;justify-content:space-between;align-items:center"></div>
+            <div style="width:230px;display:flex;justify-content:space-between;align-items:center"></div>
             <div>
                 <el-button type="success" size="small" @click="addVisible = true">添加用户</el-button>
             </div>
@@ -23,7 +26,7 @@
             </el-table-column>
             <el-table-column label="昵称" width="280" align="center">
                 <template slot-scope="scope">
-                    <span>{{scope.row.nikeName}}</span>
+                    <span>{{scope.row.nickName}}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -47,7 +50,9 @@ export default {
         return {
             tableData: [],
             addVisible: false,
-            addNikeName: ""
+            addNickName: "",
+            addAccount: "",
+            addPassword: ""
         };
     },
     methods: {
@@ -63,7 +68,11 @@ export default {
         },
         addUser() {
             this.$api
-                .addUser({ nikeName: this.addNikeName })
+                .addUser({
+                    nickName: this.addNickName,
+                    account: this.addAccount,
+                    password: this.addPassword
+                })
                 .then(({ data }) => {
                     if (data.code == 1) {
                         this.addVisible = false;

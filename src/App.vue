@@ -4,6 +4,31 @@
     </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
+export default {
+    data() {
+        return {};
+    },
+    methods: {
+        ...mapMutations(["setUserId", "setIsRoot"])
+    },
+    created() {
+        if (localStorage.getItem("isRoot") == "") {
+            this.setIsRoot({ isRoot: false });
+        } else {
+            this.setIsRoot({ isRoot: true });
+        }
+
+        if (
+            localStorage.getItem("userId") == "" ||
+            localStorage.getItem("userId") == null
+        ) {
+            this.setUserId({ userId: "" });
+        } else {
+            this.setUserId({ userId: localStorage.getItem("userId") });
+        }
+    }
+};
 </script>
 <style lang="less">
 * {

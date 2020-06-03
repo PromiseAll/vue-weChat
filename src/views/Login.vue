@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
     data() {
         return {
@@ -32,6 +33,7 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(["setUserId", "setIsRoot"]),
         login() {
             console.log(this.account);
             console.log(this.password);
@@ -41,7 +43,24 @@ export default {
                     password: this.password
                 })
                 .then(({ data }) => {
-                    console.log(data);
+                    if (data.code == 1) {
+                        if (data.result.isRoot) {
+                            this.setUserId({ userId: "" });
+                            this.setIsRoot({ isRoot: true });
+                            localStorage.setItem("isRoot", true);
+                            localStorage.setItem("userId", "");
+                        } else {
+                            this.setUserId({ userId: data.result._id });
+                            this.setIsRoot({ isRoot: false });
+                            localStorage.setItem("isRoot", "");
+                            localStorage.setItem("userId", data.result._id);
+                        }
+                        localStorage.setItem("isLogin", true);
+                        this.$router.push("/home");
+                    } else {
+                        localStorage.setItem("userId", "");
+                        localStorage.setItem("isRoot", "");
+                    }
                 });
         }
     }

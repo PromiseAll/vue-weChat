@@ -5,6 +5,10 @@ Vue.use(VueRouter);
 
 const routes = [
     {
+        path: '/', // 默认进入路由
+        redirect: '/home', //重定向
+    },
+    {
         path: '/home',
         name: 'Home',
         component: () => import('@/views/Home.vue'),
@@ -41,5 +45,16 @@ const routes = [
 const router = new VueRouter({
     routes,
 });
-
+router.beforeEach((to, from, next) => {
+    if (to.path.indexOf('/home') != -1) {
+        let isLogin = localStorage.getItem('isLogin');
+        if (isLogin == '' || isLogin == null) {
+            next('/login');
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+});
 export default router;

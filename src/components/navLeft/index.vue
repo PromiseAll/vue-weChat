@@ -30,7 +30,7 @@
                         <router-link to="/home/linkList" tag="p">链接管理</router-link>
                     </el-menu-item>
                 </el-submenu>
-                <el-submenu index="3">
+                <el-submenu index="3" v-if="isRoot">
                     <template slot="title">
                         <i class="el-icon-user"></i>
                         <span>管理用户</span>
@@ -45,7 +45,11 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
+    computed: {
+        ...mapState(["isRoot"])
+    },
     methods: {}
 };
 </script>
